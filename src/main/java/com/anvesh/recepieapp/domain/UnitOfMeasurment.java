@@ -1,6 +1,8 @@
 package com.anvesh.recepieapp.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
@@ -8,6 +10,7 @@ public class UnitOfMeasurment {
 
     private String uom;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     public Long getId() {

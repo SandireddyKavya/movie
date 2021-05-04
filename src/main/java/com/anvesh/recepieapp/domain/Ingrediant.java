@@ -1,9 +1,6 @@
 package com.anvesh.recepieapp.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
@@ -13,9 +10,10 @@ public class Ingrediant {
     private Long id;
     private String description;
 
-    @OneToOne
-    private UnitOfMeasurment uom;
+    @OneToOne(fetch = FetchType.EAGER)
+    private UnitOfMeasurment measurment;
     private BigDecimal amount;
+
 
     @ManyToOne
     private Recipe recipe;
@@ -50,5 +48,13 @@ public class Ingrediant {
 
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
+    }
+
+    public UnitOfMeasurment getMeasurment() {
+        return measurment;
+    }
+
+    public void setMeasurment(UnitOfMeasurment measurment) {
+        this.measurment = measurment;
     }
 }
