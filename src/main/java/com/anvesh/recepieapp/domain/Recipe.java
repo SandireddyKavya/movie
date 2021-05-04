@@ -2,6 +2,7 @@ package com.anvesh.recepieapp.domain;
 
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -18,6 +19,7 @@ public class Recipe {
     private String url;
     @Enumerated(value = EnumType.STRING)
     private Difficulty difficulty;
+    @Lob
     private String directions;
     @Lob
     private Byte[] image;
@@ -25,13 +27,21 @@ public class Recipe {
     private Notes notes;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
-    private Set<Ingrediant> ingrediants;
+    private Set<Ingrediant> ingrediants = new HashSet<>();
 
     @ManyToMany
     @JoinTable(name = "recipe_categorie",
             joinColumns = @JoinColumn(name = "recipe_id"),
             inverseJoinColumns = @JoinColumn(name = "categorie_id"))
-    private Set<Categorie> categories;
+    private Set<Categorie> categories = new HashSet<>();
+
+    public Set<Categorie> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Categorie> categories) {
+        this.categories = categories;
+    }
 
     public String getDescription() {
         return description;

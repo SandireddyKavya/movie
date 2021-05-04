@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 public class Ingrediant {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String description;
 
@@ -14,9 +15,18 @@ public class Ingrediant {
     private UnitOfMeasurment measurment;
     private BigDecimal amount;
 
-
     @ManyToOne
     private Recipe recipe;
+
+    public Ingrediant() {
+    }
+
+    public Ingrediant(String description, UnitOfMeasurment measurment, BigDecimal amount, Recipe recipe) {
+        this.description = description;
+        this.measurment = measurment;
+        this.amount = amount;
+        this.recipe = recipe;
+    }
 
     public Long getId() {
         return id;

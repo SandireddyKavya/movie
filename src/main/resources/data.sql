@@ -14,3 +14,7 @@ insert into Unit_Of_Measurment (uom)
 values ('glass');
 insert into Unit_Of_Measurment (uom)
 values ('bowl');
+insert into Unit_Of_Measurment (uom)
+values ('pinch');
+insert into Unit_Of_Measurment (uom)
+values ('piece');
