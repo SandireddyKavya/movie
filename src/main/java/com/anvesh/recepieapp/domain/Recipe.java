@@ -2,6 +2,7 @@ package com.anvesh.recepieapp.domain;
 
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Recipe {
@@ -21,6 +22,9 @@ public class Recipe {
     private Byte[] image;
     @OneToOne(cascade = CascadeType.ALL)
     private Notes notes;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
+    private Set<Ingrediant> ingrediants;
 
     public String getDescription() {
         return description;
