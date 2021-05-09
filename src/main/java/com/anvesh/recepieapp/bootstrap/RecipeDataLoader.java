@@ -127,6 +127,8 @@ public class RecipeDataLoader implements ApplicationListener<ContextRefreshedEve
         indian.getRecipes().add(omlet);
         coffee.getCategories().add(indian);
         coffee.getCategories().add(amercian);
+        coffee.setSavings(4);
+        coffee.setUrl("www.anveshKitchen.com");
 
 
         omlet.setCookTime(15);
@@ -142,6 +144,8 @@ public class RecipeDataLoader implements ApplicationListener<ContextRefreshedEve
                 "let it heat for 5 minutes and the serve it");
 
         omlet.getCategories().add(indian);
+        omlet.setSavings(1);
+        omlet.setUrl("www.anveshKitchen.com");
         recipes.add(omlet);
         recipes.add(coffee);
 
