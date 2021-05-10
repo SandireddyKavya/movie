@@ -5,6 +5,9 @@ import com.anvesh.recepieapp.domain.Notes;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
+
+//To Convert Notes to NotesCommand entity
+
 @Component
 public class NotesToNotesCommand implements Converter<Notes, NotesCommand> {
     @Override

@@ -19,6 +19,7 @@ public class Ingrediant {
     private Recipe recipe;
 
     public Ingrediant() {
+
     }
 
     public Ingrediant(String description, UnitOfMeasurment measurment, BigDecimal amount, Recipe recipe) {

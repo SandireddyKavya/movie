@@ -77,8 +77,8 @@ public class RecipeDataLoader implements ApplicationListener<ContextRefreshedEve
 
 
         //Adding Ingrediants to recipes
-        coffee.getIngrediants().add(water);
-        coffee.getIngrediants().add(milk);
+        coffee.getIngrediants().add(egg);
+        coffee.getIngrediants().add(pepper);
         coffee.getIngrediants().add(coffePowder);
         coffee.getIngrediants().add(sugar);
 
