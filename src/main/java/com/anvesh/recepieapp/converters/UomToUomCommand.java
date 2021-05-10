@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 public class UomToUomCommand implements Converter<UnitOfMeasurment, UnitOfMeasurementCommand> {
     @Override
     public UnitOfMeasurementCommand convert(UnitOfMeasurment unitOfMeasurment) {
+        if (unitOfMeasurment == null) {
+            return null;
+        }
         UnitOfMeasurementCommand command = new UnitOfMeasurementCommand();
         command.setId(unitOfMeasurment.getId());
         command.setUom(unitOfMeasurment.getUom());
