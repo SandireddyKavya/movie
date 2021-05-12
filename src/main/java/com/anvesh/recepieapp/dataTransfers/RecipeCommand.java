@@ -1,9 +1,6 @@
 package com.anvesh.recepieapp.dataTransfers;
 
-import com.anvesh.recepieapp.domain.Categorie;
 import com.anvesh.recepieapp.domain.Difficulty;
-import com.anvesh.recepieapp.domain.Ingrediant;
-import com.anvesh.recepieapp.domain.Notes;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,8 +22,8 @@ public class RecipeCommand {
     private String url;
     private Difficulty difficulty;
     private String directions;
-    private Notes notes;
-    private Set<Ingrediant> ingrediants = new HashSet<>();
-    private Set<Categorie> categories = new HashSet<>();
+    private NotesCommand notes;
+    private Set<IngrediantCommand> ingrediants = new HashSet<>();
+    private Set<CategorieCommand> categories = new HashSet<>();
 
 }
