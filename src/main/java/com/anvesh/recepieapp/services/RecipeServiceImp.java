@@ -40,6 +40,11 @@ public class RecipeServiceImp implements RecipeService {
     }
 
     @Override
+    public RecipeCommand commandFindyById(Long l) {
+        return toRecipeCommand.convert(findById(l));
+    }
+
+    @Override
     public RecipeCommand saveReciepeCommand(RecipeCommand command) {
 //        Id Is not generated since it is not saved into database
         Recipe recipe = toRecipe.convert(command);

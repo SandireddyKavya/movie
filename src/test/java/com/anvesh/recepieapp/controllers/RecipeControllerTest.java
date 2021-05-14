@@ -1,5 +1,6 @@
 package com.anvesh.recepieapp.controllers;
 
+import com.anvesh.recepieapp.dataTransfers.RecipeCommand;
 import com.anvesh.recepieapp.domain.Recipe;
 import com.anvesh.recepieapp.services.RecipeService;
 import org.junit.Test;
@@ -39,5 +40,13 @@ public class RecipeControllerTest {
         mvc.perform(get("/recipe/show/1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("/recipe/show"));
+    }
+
+    @Test
+    public void saveOrUpdate() throws Exception {
+        RecipeCommand command = new RecipeCommand();
+        command.setId(1L);
+        when(service.saveReciepeCommand(command)).thenReturn(command);
+//        mvc.perform()
     }
 }

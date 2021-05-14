@@ -40,5 +40,14 @@ public class RecipeController {
         return "redirect:/recipe/show/" + recipe.getId();
 
     }
+
+
+    //    To autopopulate the values in view Page
+    @RequestMapping({"/recipe/{id}/update"})
+    public String Update(@PathVariable String id, Model model) {
+        RecipeCommand command = service.commandFindyById(Long.valueOf(id));
+        model.addAttribute("recipe", command);
+        return "recipe/recipeform";
+    }
 }
 
