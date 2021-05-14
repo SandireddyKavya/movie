@@ -6,10 +6,7 @@ import com.anvesh.recepieapp.domain.Recipe;
 import com.anvesh.recepieapp.services.RecipeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class RecipeController {
@@ -48,6 +45,13 @@ public class RecipeController {
         RecipeCommand command = service.commandFindyById(Long.valueOf(id));
         model.addAttribute("recipe", command);
         return "recipe/recipeform";
+    }
+
+    @GetMapping
+    @RequestMapping({"recipe/{id}/delete"})
+    public String delete(@PathVariable String id) {
+        service.deletById(Long.valueOf(id));
+        return "redirect:/index";
     }
 }
 

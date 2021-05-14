@@ -53,4 +53,13 @@ public class RecipeServiceImpTest {
         verify(recipeRepository, times(1)).findById(anyLong());
         verify(recipeRepository, never()).findAll();
     }
+
+    @Test
+    public void deletById() {
+        Long id = 1L;
+//        when
+        recipeServiceImp.deletById(id);
+//        Then
+        verify(recipeRepository, times(1)).deleteById(anyLong());
+    }
 }

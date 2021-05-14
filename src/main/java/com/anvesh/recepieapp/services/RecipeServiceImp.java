@@ -30,12 +30,14 @@ public class RecipeServiceImp implements RecipeService {
 //        log.debug("hello there");
         Set<Recipe> recipes = new HashSet<>();
         recipeRepository.findAll().iterator().forEachRemaining(recipes::add);
+        log.debug("Found recipies : " + recipes.size());
         return recipes;
     }
 
     @Override
     public Recipe findById(Long l) {
         Optional<Recipe> recipe = recipeRepository.findById(l);
+
         return recipe.orElseThrow(() -> new RuntimeException("Recipie Not found"));
     }
 
@@ -56,5 +58,9 @@ public class RecipeServiceImp implements RecipeService {
 
     }
 
-
+    @Override
+    public void deletById(Long id) {
+        recipeRepository.deleteById(id);
+        log.debug("Recipe: " + id + " deleted");
+    }
 }

@@ -25,7 +25,7 @@ public class UnitOfMeasureRepoTest {
 
     @Test
     public void findByUom() {
-        Optional<UnitOfMeasurment> unm = repo.findByUom("teaspoon");
+        Optional<UnitOfMeasurment> unm = repo.findByUom("Teaspoon");
         assertEquals("Teaspoon", unm.get().getUom());
     }
 }

@@ -1,10 +1,9 @@
 package com.anvesh.recepieapp.controllers;
 
-import com.anvesh.recepieapp.dataTransfers.RecipeCommand;
 import com.anvesh.recepieapp.domain.Recipe;
 import com.anvesh.recepieapp.services.RecipeService;
-import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -13,7 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -42,11 +41,22 @@ public class RecipeControllerTest {
                 .andExpect(view().name("/recipe/show"));
     }
 
+    /*  @Test
+      public void saveOrUpdate() throws Exception {
+          RecipeCommand command = new RecipeCommand();
+          command.setId(1L);
+          when(service.saveReciepeCommand(command)).thenReturn(command);
+  //        mvc.perform()
+      }
+  */
     @Test
-    public void saveOrUpdate() throws Exception {
-        RecipeCommand command = new RecipeCommand();
-        command.setId(1L);
-        when(service.saveReciepeCommand(command)).thenReturn(command);
-//        mvc.perform()
+    public void deleteTest() throws Exception {
+//        When
+        mvc.perform(get("/recipe/1/delete"))
+//                Then
+                .andExpect(status().is3xxRedirection())
+//                Then
+                .andExpect(view().name("redirect:/index"));
+        verify(service, times(1)).deletById(anyLong());
     }
 }
