@@ -3,9 +3,12 @@ package com.anvesh.recepieapp.converters;
 import com.anvesh.recepieapp.dataTransfers.RecipeCommand;
 import com.anvesh.recepieapp.domain.Recipe;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
+
+@Component
 public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
 
     private final IngrediantCommandToIngrediant toIngrediant;

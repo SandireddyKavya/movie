@@ -1,5 +1,7 @@
 package com.anvesh.recepieapp.services;
 
+import com.anvesh.recepieapp.converters.RecipeCommandToRecipe;
+import com.anvesh.recepieapp.converters.RecipeToRecipeCommand;
 import com.anvesh.recepieapp.domain.Recipe;
 import com.anvesh.recepieapp.repositories.RecipeRepository;
 import org.junit.Before;
@@ -20,12 +22,17 @@ public class RecipeServiceImpTest {
     @Mock
     RecipeRepository recipeRepository;
 
+    @Mock
+    RecipeToRecipeCommand toRecipeCommand;
+    @Mock
+    RecipeCommandToRecipe toRecipe;
+
     RecipeServiceImp recipeServiceImp;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        recipeServiceImp = new RecipeServiceImp(recipeRepository);
+        recipeServiceImp = new RecipeServiceImp(recipeRepository, toRecipeCommand, toRecipe);
     }
 
     @Test
