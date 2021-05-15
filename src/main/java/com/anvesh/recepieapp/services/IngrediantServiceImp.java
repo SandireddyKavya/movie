@@ -1,5 +1,6 @@
 package com.anvesh.recepieapp.services;
 
+import com.anvesh.recepieapp.converters.IngrediantCommandToIngrediant;
 import com.anvesh.recepieapp.converters.IngredianteToIngredianteCommand;
 import com.anvesh.recepieapp.dataTransfers.IngrediantCommand;
 import com.anvesh.recepieapp.domain.Ingrediant;
@@ -15,10 +16,12 @@ import java.util.Optional;
 public class IngrediantServiceImp implements IngrediantService {
     private final IngrediantRepo repository;
     private final IngredianteToIngredianteCommand toIngredianteCommand;
+    private final IngrediantCommandToIngrediant toIngrediant;
 
-    public IngrediantServiceImp(IngrediantRepo repository, IngredianteToIngredianteCommand toIngredianteCommand) {
+    public IngrediantServiceImp(IngrediantRepo repository, IngredianteToIngredianteCommand toIngredianteCommand, IngrediantCommandToIngrediant toIngrediant) {
         this.repository = repository;
         this.toIngredianteCommand = toIngredianteCommand;
+        this.toIngrediant = toIngrediant;
     }
 
     @Override
@@ -31,7 +34,14 @@ public class IngrediantServiceImp implements IngrediantService {
         if (command == null) {
             System.out.println("command is null");
         }
-
         return command;
+    }
+
+    @Override
+    public IngrediantCommand saveIngredientCommand(IngrediantCommand command) {
+        Ingrediant tempIngrediant = toIngrediant.convert(command);
+
+
+        return null;
     }
 }

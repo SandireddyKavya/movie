@@ -1,6 +1,8 @@
 package com.anvesh.recepieapp.services;
 
+import com.anvesh.recepieapp.converters.IngrediantCommandToIngrediant;
 import com.anvesh.recepieapp.converters.IngredianteToIngredianteCommand;
+import com.anvesh.recepieapp.converters.UomCommandToUom;
 import com.anvesh.recepieapp.converters.UomToUomCommand;
 import com.anvesh.recepieapp.dataTransfers.IngrediantCommand;
 import com.anvesh.recepieapp.domain.Ingrediant;
@@ -32,6 +34,12 @@ class IngrediantServiceImpTest {
     @InjectMocks
     IngredianteToIngredianteCommand toIngredianteCommand;
 
+    @Mock
+    UomCommandToUom toUom;
+
+    @InjectMocks
+    IngrediantCommandToIngrediant toIngrediant;
+
    /* public IngrediantServiceImpTest() {
         this.toIngredianteCommand = new IngredianteToIngredianteCommand(new UomToUomCommand());
     }*/
@@ -42,7 +50,7 @@ class IngrediantServiceImpTest {
     @BeforeEach
     void setUp() {
 //        MockitoAnnotations.initMocks(this);
-        service = new IngrediantServiceImp(repository, toIngredianteCommand);
+        service = new IngrediantServiceImp(repository, toIngredianteCommand, toIngrediant);
     }
 
     @Test
