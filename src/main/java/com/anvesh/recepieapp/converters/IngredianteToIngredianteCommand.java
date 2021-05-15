@@ -3,10 +3,12 @@ package com.anvesh.recepieapp.converters;
 import com.anvesh.recepieapp.dataTransfers.IngrediantCommand;
 import com.anvesh.recepieapp.domain.Ingrediant;
 import lombok.Synchronized;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class IngredianteToIngredianteCommand implements Converter<Ingrediant, IngrediantCommand> {
 
@@ -31,8 +33,11 @@ public class IngredianteToIngredianteCommand implements Converter<Ingrediant, In
         command.setMeasurment(toUomCommand.convert(ingrediant.getMeasurment()));
         command.setAmount(ingrediant.getAmount());
         command.setDescription(ingrediant.getDescription());
-        if (ingrediant.getRecipe() != null)
+        if (ingrediant.getRecipe() != null) {
             command.setRecipeId(ingrediant.getRecipe().getId());
+            log.debug("Id is not NUll " + ingrediant.getRecipe().getId());
+        }
+
         return command;
     }
 }

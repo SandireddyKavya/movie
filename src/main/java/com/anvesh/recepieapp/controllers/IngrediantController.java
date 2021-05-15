@@ -49,12 +49,13 @@ public class IngrediantController {
         return "recipe/ingrediants/ingrediantform";
     }
 
-    @PostMapping
-    @RequestMapping({"recipe/{recipe_id/ingredient}"})
-    public String saveOrUpdate(@ModelAttribute IngrediantCommand command) {
+
+    @PostMapping("recipe/{recipe_id}/ingredient")
+    public String saveOrUpdate(@ModelAttribute IngrediantCommand command, @PathVariable Long recipe_id) {
+        command.setRecipeId(recipe_id);
+        System.out.println("In Save or update method " + command.getRecipeId());
+        IngrediantCommand savedCommand = ingrediantService.saveIngredientCommand(command);
         log.debug("SAving Ingrediant to database");
-        return "";
-
+        return "redirect:/recipe/" + savedCommand.getRecipeId() + "/ingredients/" + savedCommand.getId() + "/show";
     }
-
 }
