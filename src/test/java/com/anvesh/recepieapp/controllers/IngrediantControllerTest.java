@@ -1,6 +1,9 @@
-package com.anvesh.recepieapp.services;
+package com.anvesh.recepieapp.controllers;
 
+import com.anvesh.recepieapp.dataTransfers.IngrediantCommand;
 import com.anvesh.recepieapp.dataTransfers.RecipeCommand;
+import com.anvesh.recepieapp.services.IngrediantService;
+import com.anvesh.recepieapp.services.RecipeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,6 +27,8 @@ class IngrediantControllerTest {
 
     @Mock
     RecipeService service;
+    @Mock
+    IngrediantService ingrediantService;
     MockMvc mvc;
 
     @BeforeEach
@@ -42,5 +47,17 @@ class IngrediantControllerTest {
                 .andExpect(view().name("recipe/ingrediants/list"))
                 .andExpect(model().attributeExists("recipe"));
         verify(service, times(1)).commandFindyById(anyLong());
+    }
+
+    @Test
+    void showIngrediant() throws Exception {
+        IngrediantCommand command = new IngrediantCommand();
+        command.setId(1L);
+        command.setRecipeId(3L);
+        when(ingrediantService.findByIngrediantIdAndRecipeId(anyLong(), anyLong())).thenReturn(command);
+        mvc.perform(get("/recipe/1/ingredients/1/show")).andExpect(status().isOk())
+                .andExpect(view().name("recipe/ingrediants/show"))
+                .andExpect(model().attributeExists("ingredient"));
+        verify(ingrediantService, times(1)).findByIngrediantIdAndRecipeId(anyLong(), anyLong());
     }
 }

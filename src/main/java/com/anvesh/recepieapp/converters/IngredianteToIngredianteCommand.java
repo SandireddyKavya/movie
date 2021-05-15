@@ -22,13 +22,17 @@ public class IngredianteToIngredianteCommand implements Converter<Ingrediant, In
     @Override
     public IngrediantCommand convert(Ingrediant ingrediant) {
         if (ingrediant == null) {
+            System.out.println("Ingrediant is empty cannot convert");
             return null;
         }
+        System.out.println("engrediant is not empty");
         IngrediantCommand command = new IngrediantCommand();
         command.setId(ingrediant.getId());
         command.setMeasurment(toUomCommand.convert(ingrediant.getMeasurment()));
         command.setAmount(ingrediant.getAmount());
         command.setDescription(ingrediant.getDescription());
+        if (ingrediant.getRecipe() != null)
+            command.setRecipeId(ingrediant.getRecipe().getId());
         return command;
     }
 }
