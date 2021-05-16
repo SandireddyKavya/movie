@@ -11,6 +11,7 @@ import com.anvesh.recepieapp.repositories.UnitOfMeasureRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 
@@ -32,6 +33,7 @@ public class IngrediantServiceImp implements IngrediantService {
     }
 
     @Override
+    @Transactional
     public IngrediantCommand findByIngrediantIdAndRecipeId(Long id, Long recipe_id) {
         Optional<Ingrediant> optional = ingrediantRepository.findByIdAndRecipeId(id, recipe_id);
 //        System.out.println("Option is not empty");
@@ -44,43 +46,50 @@ public class IngrediantServiceImp implements IngrediantService {
         return command;
     }
 
-// To save or update ingredient to database
-@Override
-public IngrediantCommand saveIngredientCommand(IngrediantCommand command) {
-    Optional<Recipe> optionalRecipe = recipeRepository.findById(command.getRecipeId());
-    if (optionalRecipe.isEmpty()) {
-        log.debug("REcipe is no present in ingrediant " + command.getRecipeId());
-        return new IngrediantCommand();
-    }
-    Recipe recipe = optionalRecipe.get();
-    Optional<Ingrediant> ingrediantOptional = recipe.getIngrediants().stream()
-            .filter(ingrediant -> ingrediant.getId().equals(command.getId()))
-            .findFirst();
+    // To save or update ingredient to database
+    @Override
+    @Transactional
+    public IngrediantCommand saveIngredientCommand(IngrediantCommand command) {
+        Optional<Recipe> optionalRecipe = recipeRepository.findById(command.getRecipeId());
+        if (optionalRecipe.isEmpty()) {
+            log.debug("REcipe is no present in ingrediant " + command.getRecipeId());
+            return new IngrediantCommand();
+        }
+        Recipe recipe = optionalRecipe.get();
+        Optional<Ingrediant> ingrediantOptional = recipe.getIngrediants().stream()
+                .filter(ingrediant -> ingrediant.getId().equals(command.getId()))
+                .findFirst();
 //                ingrediantRepository.findByIdAndRecipeId(command.getId(), recipe.getId());
-    if (ingrediantOptional.isPresent()) {
-        Ingrediant ingredientFound = ingrediantOptional.get();
-        ingredientFound.setDescription(command.getDescription());
-        ingredientFound.setAmount(command.getAmount());
-        System.out.println("Unit of measure Id " + command.getMeasurment().getId());
-        ingredientFound.setMeasurment(unitOfMeasureRepo
-                .findById(command.getMeasurment().getId())
-                .orElseThrow(() -> new RuntimeException("UOM NOT FOUND")));
-    } else {
+        if (ingrediantOptional.isPresent()) {
+            Ingrediant ingredientFound = ingrediantOptional.get();
+            ingredientFound.setDescription(command.getDescription());
+            ingredientFound.setAmount(command.getAmount());
+            System.out.println("Unit of measure Id " + command.getMeasurment().getId());
+            ingredientFound.setMeasurment(unitOfMeasureRepo
+                    .findById(command.getMeasurment().getId())
+                    .orElseThrow(() -> new RuntimeException("UOM NOT FOUND")));
+        } else {
 //            Add new Ingredient to recipe
-        recipe.addIngredient(toIngrediant.convert(command));
+            recipe.addIngredient(toIngrediant.convert(command));
 //            recipe.getIngrediants().add(toIngrediant.convert(command));
-    }
+        }
 
-    Recipe savedRecdipe = recipeRepository.save(recipe);
+        Recipe savedRecdipe = recipeRepository.save(recipe);
 //        if it is a new ingredient, command object doesn't contains a id,since it is not saved in db
-    Optional<Ingrediant> savedIngredient = savedRecdipe.getIngrediants().stream().filter(ingrediant -> ingrediant.getId().equals(command.getId())).findFirst();
-    if (savedIngredient.isEmpty()) {
-        savedIngredient = savedRecdipe.getIngrediants().stream().filter(ingrediant -> ingrediant.getDescription().equals(command.getDescription()))
-                .filter(ingrediant -> ingrediant.getAmount().equals(command.getAmount()))
-                .filter(ingrediant -> ingrediant.getMeasurment().getId().equals(command.getMeasurment().getId())).findFirst();
+        Optional<Ingrediant> savedIngredient = savedRecdipe.getIngrediants().stream().filter(ingrediant -> ingrediant.getId().equals(command.getId())).findFirst();
+        if (savedIngredient.isEmpty()) {
+            savedIngredient = savedRecdipe.getIngrediants().stream().filter(ingrediant -> ingrediant.getDescription().equals(command.getDescription()))
+                    .filter(ingrediant -> ingrediant.getAmount().equals(command.getAmount()))
+                    .filter(ingrediant -> ingrediant.getMeasurment().getId().equals(command.getMeasurment().getId())).findFirst();
+        }
+        return toIngredianteCommand.convert(savedIngredient.get());
+
     }
 
-    return toIngredianteCommand.convert(savedIngredient.get());
-
-}
+    @Override
+    @Transactional
+    public void deleteIngredientIdAndRecipeId(Long inredientId, Long recipeId) {
+//        todo add validation to check they are valid ids
+        ingrediantRepository.deleteByIdAndRecipeId(inredientId, recipeId);
+    }
 }

@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface IngrediantRepo extends CrudRepository<Ingrediant, Long> {
     //    Ingrediant findByIdAndRecipeId(Long id, Long recipe_id);
     Optional<Ingrediant> findByIdAndRecipeId(Long id, Long recipe_id);
+
+    void deleteByIdAndRecipeId(Long id, Long recipe_id);
 }

@@ -80,4 +80,11 @@ class IngrediantControllerTest {
         verify(recipeService, times(1)).commandFindyById(anyLong());
         verify(unitOfMeasureService, times(1)).findAllUOM();
     }
+
+    @Test
+    void deleteIngredient() throws Exception {
+        mvc.perform(get("/recipe/1/ingredients/1/delete")).andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/recipe/1/ingredients"));
+        verify(ingrediantService, times(1)).deleteIngredientIdAndRecipeId(anyLong(), anyLong());
+    }
 }

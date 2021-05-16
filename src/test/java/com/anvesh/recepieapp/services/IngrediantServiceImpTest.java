@@ -104,4 +104,20 @@ class IngrediantServiceImpTest {
         verify(recipeRepository, times(1)).save(any(Recipe.class));
 
     }
+
+    @Test
+    void deleteIngredient() {
+        Recipe recipe = new Recipe();
+        recipe.setId(1L);
+        Ingrediant ing = new Ingrediant();
+        ing.setId(1L);
+        Ingrediant ing2 = new Ingrediant();
+        ing2.setId(2L);
+        recipe.addIngredient(ing);
+        recipe.addIngredient(ing2);
+        service.deleteIngredientIdAndRecipeId(2L, 1L);
+        verify(ingrediantRepository, times(1)).deleteByIdAndRecipeId(anyLong(), anyLong());
+//        assertEquals(1,recipeRepository.findById(1L).get().getIngrediants().size());
+
+    }
 }
