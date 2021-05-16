@@ -2,6 +2,8 @@ package com.anvesh.recepieapp.controllers;
 
 
 import com.anvesh.recepieapp.dataTransfers.IngrediantCommand;
+import com.anvesh.recepieapp.dataTransfers.RecipeCommand;
+import com.anvesh.recepieapp.dataTransfers.UnitOfMeasurementCommand;
 import com.anvesh.recepieapp.services.IngrediantService;
 import com.anvesh.recepieapp.services.RecipeService;
 import com.anvesh.recepieapp.services.UnitOfMeasureService;
@@ -13,12 +15,12 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @Slf4j
 public class IngrediantController {
-    private final RecipeService service;
+    private final RecipeService recipeService;
     private final IngrediantService ingrediantService;
     private final UnitOfMeasureService unitOfMeasureService;
 
-    public IngrediantController(RecipeService service, IngrediantService ingrediantService, UnitOfMeasureService unitOfMeasureService) {
-        this.service = service;
+    public IngrediantController(RecipeService recipeService, IngrediantService ingrediantService, UnitOfMeasureService unitOfMeasureService) {
+        this.recipeService = recipeService;
         this.ingrediantService = ingrediantService;
         this.unitOfMeasureService = unitOfMeasureService;
     }
@@ -28,7 +30,7 @@ public class IngrediantController {
     @GetMapping
     @RequestMapping("recipe/{id}/ingredients")
     public String listOfIngrediants(@PathVariable String id, Model model) {
-        model.addAttribute("recipe", service.commandFindyById(Long.valueOf(id)));
+        model.addAttribute("recipe", recipeService.commandFindyById(Long.valueOf(id)));
         return "recipe/ingrediants/list";
     }
 
@@ -52,10 +54,24 @@ public class IngrediantController {
 
     @PostMapping("recipe/{recipe_id}/ingredient")
     public String saveOrUpdate(@ModelAttribute IngrediantCommand command, @PathVariable Long recipe_id) {
-        command.setRecipeId(recipe_id);
         System.out.println("In Save or update method " + command.getRecipeId());
         IngrediantCommand savedCommand = ingrediantService.saveIngredientCommand(command);
         log.debug("SAving Ingrediant to database");
         return "redirect:/recipe/" + savedCommand.getRecipeId() + "/ingredients/" + savedCommand.getId() + "/show";
     }
+
+    @GetMapping("recipe/{recipe_id}/ingredient/new")
+    public String newIngredient(Model model, @PathVariable Long recipe_id) {
+        RecipeCommand command = recipeService.commandFindyById(recipe_id);
+        IngrediantCommand command1 = new IngrediantCommand();
+        command1.setRecipeId(recipe_id);
+        command1.setMeasurment(new UnitOfMeasurementCommand());
+//        Adding list of measures to choose in ui
+        model.addAttribute("listUOM", unitOfMeasureService.findAllUOM());
+//        Adding empty ingrediant object which is automatically populated in ui after user enters values
+        model.addAttribute("ingredient", command1);
+        return "recipe/ingrediants/ingrediantform";
+    }
+
+
 }

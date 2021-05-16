@@ -138,4 +138,12 @@ public class Recipe {
     public void setIngrediants(Set<Ingrediant> ingrediants) {
         this.ingrediants = ingrediants;
     }
+
+
+    public Recipe addIngredient(Ingrediant ingrediant) {
+//        Addinh recipe to the ingredients;
+        ingrediant.setRecipe(this);
+        this.ingrediants.add(ingrediant);
+        return this;
+    }
 }

@@ -4,6 +4,7 @@ import com.anvesh.recepieapp.dataTransfers.IngrediantCommand;
 import com.anvesh.recepieapp.dataTransfers.RecipeCommand;
 import com.anvesh.recepieapp.services.IngrediantService;
 import com.anvesh.recepieapp.services.RecipeService;
+import com.anvesh.recepieapp.services.UnitOfMeasureService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +13,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.HashSet;
 
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -24,9 +27,11 @@ class IngrediantControllerTest {
 
     @InjectMocks
     IngrediantController controller;
+    @Mock
+    UnitOfMeasureService unitOfMeasureService;
 
     @Mock
-    RecipeService service;
+    RecipeService recipeService;
     @Mock
     IngrediantService ingrediantService;
     MockMvc mvc;
@@ -40,13 +45,13 @@ class IngrediantControllerTest {
     void listOfIngrediants() throws Exception {
         RecipeCommand command = new RecipeCommand();
         command.setId(1L);
-        when(service.commandFindyById(anyLong())).thenReturn(command);
+        when(recipeService.commandFindyById(anyLong())).thenReturn(command);
 //        when
         mvc.perform(get("/recipe/1/ingredients"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/ingrediants/list"))
                 .andExpect(model().attributeExists("recipe"));
-        verify(service, times(1)).commandFindyById(anyLong());
+        verify(recipeService, times(1)).commandFindyById(anyLong());
     }
 
     @Test
@@ -59,5 +64,20 @@ class IngrediantControllerTest {
                 .andExpect(view().name("recipe/ingrediants/show"))
                 .andExpect(model().attributeExists("ingredient"));
         verify(ingrediantService, times(1)).findByIngrediantIdAndRecipeId(anyLong(), anyLong());
+    }
+
+    @Test
+    void newIngredient() throws Exception {
+        RecipeCommand command = new RecipeCommand();
+        command.setId(1L);
+        when(unitOfMeasureService.findAllUOM()).thenReturn(new HashSet<>());
+        when(recipeService.commandFindyById(anyLong())).thenReturn(command);
+        mvc.perform(get("/recipe/1/ingredient/new"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipe/ingrediants/ingrediantform"))
+                .andExpect(model().attributeExists("listUOM"))
+                .andExpect(model().attributeExists("ingredient"));
+        verify(recipeService, times(1)).commandFindyById(anyLong());
+        verify(unitOfMeasureService, times(1)).findAllUOM();
     }
 }
