@@ -21,6 +21,7 @@
         <div class="col-md-6 col-md-offset-3">
             <form method="post" th:action="@{/recipe/}" th:object="${recipe}">
                 <input th:field="*{id}" type="hidden"/>
+                <input th:field="*{image}" type="hidden">
                 <div class="pannel-group">
                     <div class="panel panel-primary">
                         <div class="panel-heading">

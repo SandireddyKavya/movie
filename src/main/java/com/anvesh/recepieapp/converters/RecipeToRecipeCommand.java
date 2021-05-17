@@ -31,6 +31,7 @@ public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand> {
         command.setCookTime(recipe.getCookTime());
         command.setDirections(recipe.getDirections());
         command.setDifficulty(recipe.getDifficulty());
+        command.setImage(recipe.getImage());
         command.setIngrediants(recipe.getIngrediants().stream().map(toIngredianteCommand::convert).collect(Collectors.toSet()));
         command.setCategories(recipe.getCategories().stream().map(toCategorieCommand::convert).collect(Collectors.toSet()));
         command.setNotes(toNotesCommand.convert(recipe.getNotes()));
