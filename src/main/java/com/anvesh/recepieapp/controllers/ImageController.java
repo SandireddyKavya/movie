@@ -6,6 +6,7 @@ import com.anvesh.recepieapp.services.ImageService;
 import com.anvesh.recepieapp.services.RecipeService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,16 +48,19 @@ public class ImageController {
     @GetMapping("recipe/{id}/recipeimage")
     public void getImageFromDb(@PathVariable Long id, HttpServletResponse response) throws IOException {
         RecipeCommand command = recipeRepository.commandFindyById(id);
-        log.debug("got image from db " + command.getImage().length);
-        byte[] bytes = new byte[command.getImage().length];
-        int j = 0;
-        for (Byte i : bytes) {
-            bytes[j++] = i;
+        if (command.getImage() != null) {
+            log.debug("got image from db " + command.getImage().length);
+            byte[] bytes = new byte[command.getImage().length];
+            int j = 0;
+            for (Byte i : bytes) {
+                bytes[j++] = i;
+            }
+            response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+            InputStream is = new ByteArrayInputStream(bytes);
+            IOUtils.copy(is, response.getOutputStream());
+            is.close();
         }
-        response.setContentType("image/jpeg");
-        InputStream is = new ByteArrayInputStream(bytes);
-        IOUtils.copy(is, response.getOutputStream());
-        is.close();
+
     }
 
 
