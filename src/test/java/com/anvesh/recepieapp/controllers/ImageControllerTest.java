@@ -37,7 +37,7 @@ class ImageControllerTest {
 
     @BeforeEach
     void setUp() {
-        mvc = MockMvcBuilders.standaloneSetup(controller).build();
+        mvc = MockMvcBuilders.standaloneSetup(controller).setControllerAdvice(new ControllerExceptionHandler()).build();
     }
 
     @Test
@@ -55,6 +55,13 @@ class ImageControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/recipe/show/1"));
         verify(imageService, times(1)).saveImageFile(anyLong(), any());
+    }
+
+
+    @Test
+    void forNumberFormatexception() throws Exception {
+        mvc.perform(get("/recipe/hjk/image")).andExpect(status().isBadRequest())
+                .andExpect(view().name("404badrequest"));
     }
 
     @Test

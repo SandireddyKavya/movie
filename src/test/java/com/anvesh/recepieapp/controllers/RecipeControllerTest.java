@@ -29,7 +29,7 @@ public class RecipeControllerTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        mvc = MockMvcBuilders.standaloneSetup(controller).build();
+        mvc = MockMvcBuilders.standaloneSetup(controller).setControllerAdvice(new ControllerExceptionHandler()).build();
     }
 
     @Test
@@ -64,7 +64,7 @@ public class RecipeControllerTest {
     @Test
     void forNumberFormatexception() throws Exception {
         mvc.perform(get("/recipe/show/hjk")).andExpect(status().isBadRequest())
-                .andExpect(view().name("404Notfound"));
+                .andExpect(view().name("404badrequest"));
     }
 
     @Test
