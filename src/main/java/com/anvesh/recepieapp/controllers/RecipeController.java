@@ -9,13 +9,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
 
 @Slf4j
 @Controller
 public class RecipeController {
     private final RecipeService service;
+    private final String RECIPE_FORM = "recipe/recipeform";
 
     public RecipeController(RecipeService service) {
         this.service = service;
@@ -32,15 +36,18 @@ public class RecipeController {
     @RequestMapping({"/recipe/new"})
     public String newRecipe(Model model) {
         model.addAttribute("recipe", new RecipeCommand());
-        return "recipe/recipeform";
+        return RECIPE_FORM;
     }
 
     @PostMapping
     @RequestMapping("recipe")
-    public String saveOrUpdate(@ModelAttribute RecipeCommand command) {
+    public String saveOrUpdate(@Valid @ModelAttribute("recipe") RecipeCommand command, BindingResult result) {
+        if (result.hasErrors()) {
+            result.getAllErrors().forEach(s -> log.debug(s.toString()));
+            return RECIPE_FORM;
+        }
         RecipeCommand recipe = service.saveReciepeCommand(command);
         return "redirect:/recipe/show/" + recipe.getId();
-
     }
 
 
@@ -49,7 +56,7 @@ public class RecipeController {
     public String Update(@PathVariable String id, Model model) {
         RecipeCommand command = service.commandFindyById(Long.valueOf(id));
         model.addAttribute("recipe", command);
-        return "recipe/recipeform";
+        return RECIPE_FORM;
     }
 
     @GetMapping

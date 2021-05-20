@@ -29,9 +29,15 @@
                         </div>
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-md-3 form-group">
+                                <div class="col-md-3 form-group" th:class="${#fields.hasErrors('description')}
+                                    ?'col-md-3 form-group text-danger':'col-md-3 form-group'">
                                     <label>Recipe Description:</label>
-                                    <input class="form-control" th:field="*{description}" type="text"/>
+                                    <input class="form-control" th:errorclass="is-invalid" th:field="*{description}"
+                                           type="text"/>
+                                    <span class="help-block" th:if="${#fields.hasErrors()}"></span>
+                                    <ul>
+                                        <li th:each="err:${#fields.errors('description')}" th:text="${err}"></li>
+                                    </ul>
                                 </div>
                             </div>
                             <div class="row">
