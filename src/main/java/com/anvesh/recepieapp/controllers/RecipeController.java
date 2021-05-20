@@ -3,11 +3,16 @@ package com.anvesh.recepieapp.controllers;
 
 import com.anvesh.recepieapp.dataTransfers.RecipeCommand;
 import com.anvesh.recepieapp.domain.Recipe;
+import com.anvesh.recepieapp.exceptions.NotFoundException;
 import com.anvesh.recepieapp.services.RecipeService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+@Slf4j
 @Controller
 public class RecipeController {
     private final RecipeService service;
@@ -52,6 +57,29 @@ public class RecipeController {
     public String delete(@PathVariable String id) {
         service.deletById(Long.valueOf(id));
         return "redirect:/index";
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundException.class)
+    public ModelAndView exceptionHandler(Exception e) {
+        log.debug("Not Found Exception");
+        log.error(e.getMessage());
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("404Notfound");
+        modelAndView.addObject("exception", e);
+        return modelAndView;
+    }
+
+    //    For numberFormat Exception
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NumberFormatException.class)
+    public ModelAndView exceptionHandlerNF(Exception e) {
+        log.debug("Not Found Exception");
+        log.error(e.getMessage());
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("404Notfound");
+        modelAndView.addObject("exception", e);
+        return modelAndView;
     }
 }
 

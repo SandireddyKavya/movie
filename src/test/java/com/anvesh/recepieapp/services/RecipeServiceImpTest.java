@@ -3,6 +3,7 @@ package com.anvesh.recepieapp.services;
 import com.anvesh.recepieapp.converters.RecipeCommandToRecipe;
 import com.anvesh.recepieapp.converters.RecipeToRecipeCommand;
 import com.anvesh.recepieapp.domain.Recipe;
+import com.anvesh.recepieapp.exceptions.NotFoundException;
 import com.anvesh.recepieapp.repositories.RecipeRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,6 +53,14 @@ public class RecipeServiceImpTest {
         assertNotNull("Recipie is null", recipe);
         verify(recipeRepository, times(1)).findById(anyLong());
         verify(recipeRepository, never()).findAll();
+    }
+
+    //    Check throwing exception when recipe not found
+    @Test(expected = NotFoundException.class)
+    public void invalidRecipieId() {
+        Optional<Recipe> optionalRecipe = Optional.empty();
+        when(recipeRepository.findById(anyLong())).thenReturn(optionalRecipe);
+        Recipe recipe = recipeServiceImp.findById(1L);
     }
 
     @Test

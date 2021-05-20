@@ -4,6 +4,7 @@ import com.anvesh.recepieapp.converters.RecipeCommandToRecipe;
 import com.anvesh.recepieapp.converters.RecipeToRecipeCommand;
 import com.anvesh.recepieapp.dataTransfers.RecipeCommand;
 import com.anvesh.recepieapp.domain.Recipe;
+import com.anvesh.recepieapp.exceptions.NotFoundException;
 import com.anvesh.recepieapp.repositories.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -37,8 +38,7 @@ public class RecipeServiceImp implements RecipeService {
     @Override
     public Recipe findById(Long l) {
         Optional<Recipe> recipe = recipeRepository.findById(l);
-
-        return recipe.orElseThrow(() -> new RuntimeException("Recipie Not found"));
+        return recipe.orElseThrow(() -> new NotFoundException("Recipie Not found : " + l));
     }
 
     @Override

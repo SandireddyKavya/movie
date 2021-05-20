@@ -1,6 +1,7 @@
 package com.anvesh.recepieapp.controllers;
 
 import com.anvesh.recepieapp.domain.Recipe;
+import com.anvesh.recepieapp.exceptions.NotFoundException;
 import com.anvesh.recepieapp.services.RecipeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,6 +50,23 @@ public class RecipeControllerTest {
   //        mvc.perform()
       }
   */
+
+    @Test
+    void testInvalidRecipieId() throws Exception {
+        Recipe recipe = new Recipe();
+        recipe.setId(1L);
+        when(service.findById(anyLong())).thenThrow(NotFoundException.class);
+        mvc.perform(get("/recipe/show/1")).andExpect(status().isNotFound())
+                .andExpect(view().name("404Notfound"));
+
+    }
+
+    @Test
+    void forNumberFormatexception() throws Exception {
+        mvc.perform(get("/recipe/show/hjk")).andExpect(status().isBadRequest())
+                .andExpect(view().name("404Notfound"));
+    }
+
     @Test
     public void deleteTest() throws Exception {
 //        When
