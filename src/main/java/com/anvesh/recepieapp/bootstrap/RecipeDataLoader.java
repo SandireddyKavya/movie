@@ -6,6 +6,7 @@ import com.anvesh.recepieapp.repositories.CategorierRepo;
 import com.anvesh.recepieapp.repositories.RecipeRepository;
 import com.anvesh.recepieapp.repositories.UnitOfMeasureRepo;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,7 @@ import java.util.Optional;
 //TO Initilaize data into database as soon as application starts
 
 @Component
+@Profile("default")
 public class RecipeDataLoader implements ApplicationListener<ContextRefreshedEvent> {
     private final RecipeRepository recipeRepository;
     private final UnitOfMeasureRepo unitOfMeasurment;
